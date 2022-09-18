@@ -3,16 +3,21 @@
 import { expect, it } from "vitest";
 import { z } from "zod";
 
-const PersonResult = z.unknown();
-//                   ^ 🕵️‍♂️
+const PersonParser = z.object({
+  name: z.string(),
+  eye_color: z.string()
+});
+
+type Person = z.infer<typeof PersonParser>;
 
 export const fetchStarWarsPersonName = async (id: string) => {
   const data = await fetch("https://swapi.dev/api/people/" + id).then((res) =>
     res.json(),
   );
 
-  const parsedData = PersonResult.parse(data);
-
+  // will reduce api response down to the set of keys in parser
+  const parsedData: Person = PersonParser.parse(data);
+  console.log(parsedData)
   return parsedData.name;
 };
 

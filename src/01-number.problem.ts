@@ -3,9 +3,11 @@
 import { expect, it } from "vitest";
 import { z } from "zod";
 //       ^ 🕵️‍♂️
+const numberParser = z.number();
 
 export const toString = (num: unknown) => {
-  return String(num);
+  const parsedNumber = numberParser.parse(num);
+  return String(parsedNumber);
 };
 
 // TESTS
